@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
@@ -18,7 +19,8 @@ public class Shooter : MonoBehaviour
     private bool isShooting = false;
     public LayerMask WallLayer;
     public LayerMask TopWallLayer;
-
+    public TMP_Text scoreText;
+    private int score = 0;
     void Start()
     {
 
@@ -228,11 +230,19 @@ public class Shooter : MonoBehaviour
                     gm.topRowCells.Remove(c);
                     CellPooler.instance.ReturnCell(c.gameObject);
                 }
-
+                // ADD SCORE (1 per ball removed)
+                AddScore(cluster.Count);
                 // THEN check for floating cells
                 gm.CheckFloatingCells();
             }
         }
+    }
+
+
+    void AddScore(int amount)
+    {
+        score += amount;
+        scoreText.text = score.ToString();
     }
 
 }

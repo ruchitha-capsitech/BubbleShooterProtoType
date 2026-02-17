@@ -117,6 +117,16 @@ public class Cell : MonoBehaviour
 
         CellPooler.instance.ReturnCell(gameObject);
     }
+    //void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    if (other.CompareTag("LoseBar"))
+    //    {
+    //        Debug.Log("GAME OVER TRIGGERED");
+
+    //        UiManager.instance.GameOver();
+    //    }
+    //}
+
 
 }
 

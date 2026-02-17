@@ -7,6 +7,12 @@ public class UiManager : MonoBehaviour
     public GameObject startpanel;
     public GameObject gamepanel;
     public GameObject gameoverpanel;
+    public bool isGameOver = false;
+
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
 
@@ -25,6 +31,8 @@ public class UiManager : MonoBehaviour
     }
     public void GameOver()
     {
+        if (isGameOver) return;
+        isGameOver = true;
         startpanel.SetActive(false);
         gamepanel.SetActive(false);
         gameoverpanel.SetActive(true);
