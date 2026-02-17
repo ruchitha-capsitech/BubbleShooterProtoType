@@ -120,7 +120,7 @@ public class Cell : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (gameObject.layer == LayerMask.NameToLayer("Cell") &&
+        if (gameObject.layer == LayerMask.NameToLayer("GridCell") &&
         other.gameObject.layer == LayerMask.NameToLayer("LoseBar"))
         {
             Debug.Log("GAME OVER TRIGGERED");

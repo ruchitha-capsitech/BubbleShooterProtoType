@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,64 @@ public class GridManager : MonoBehaviour
     void Start()
     {
         GenerateGrid();
+        StartCoroutine(MoveGridDownRoutine());
+    }
+
+    IEnumerator MoveGridDownRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5f);
+
+            MoveGridDown();
+            AddNewRow();
+        }
+    }
+    void MoveGridDown()
+    {
+        foreach (Cell c in allCells)
+        {
+            if (c != null && c.gameObject.activeInHierarchy)
+            {
+                c.transform.position += Vector3.down * cellSpacing;
+            }
+        }
+    }
+    void AddNewRow()
+    {
+        Camera cam = Camera.main;
+        float topY = cam.ViewportToWorldPoint(new Vector3(0, 1, 0)).y;
+
+        List<Cell> newRow = new List<Cell>();
+
+        for (int j = 0; j < colomns; j++)
+        {
+            var cellObj = CellPooler.instance.GetCell();
+
+            if (cellObj == null)
+            {
+                Debug.LogError("CellPooler returned null! Check if prefab is assigned and pool has enough cells.");
+                return;
+            }
+            cellObj.layer = LayerMask.NameToLayer("GridCell");
+
+            var cell = cellObj.GetComponent<Cell>();
+            CellColor randomColor = (CellColor)Random.Range(0, 3);
+            cell.setColor(randomColor);
+
+            allCells.Add(cell);
+            newRow.Add(cell);
+
+            Vector2 pos = new Vector2(
+                j * cellSpacing - (colomns - 1) * cellSpacing * 0.5f,
+                topY - cellSpacing * 0.5f
+            );
+            cellObj.transform.position = pos;
+        }
+
+
+        topRowCells.Clear();
+        topRowCells.AddRange(newRow);
     }
 
     public void GenerateGrid()
@@ -28,12 +87,14 @@ public class GridManager : MonoBehaviour
             for (int j = 0; j < colomns; j++)
             {
                 var cellObj = CellPooler.instance.GetCell();
+                cellObj.layer = LayerMask.NameToLayer("GridCell");
+
                 var cell = cellObj.GetComponent<Cell>();
                 CellColor randomColor = (CellColor)Random.Range(0, 3);
                 cell.setColor(randomColor);
-                    allCells.Add(cell);
+                allCells.Add(cell);
 
-                if (i == 0) // top row
+                if (i == 0)
                 {
                     topRowCells.Add(cell);
                 }
@@ -49,7 +110,7 @@ public class GridManager : MonoBehaviour
 
         Queue<Cell> toCheck = new Queue<Cell>();
 
-        // Start BFS from all top row cells
+
         foreach (Cell top in topRowCells)
         {
             if (top.gameObject.activeInHierarchy)
@@ -75,7 +136,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        // Any cell NOT connected to top falls
+
         List<Cell> floating = new List<Cell>();
 
         foreach (Cell c in allCells)
@@ -90,7 +151,7 @@ public class GridManager : MonoBehaviour
         {
             allCells.Remove(c);
             topRowCells.Remove(c);
-
+            c.gameObject.layer = LayerMask.NameToLayer("Cell");
             c.FallAndDisable();
         }
 

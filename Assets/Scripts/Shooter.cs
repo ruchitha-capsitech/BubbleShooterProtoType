@@ -55,7 +55,7 @@ public class Shooter : MonoBehaviour
         currentCell.transform.position = shootPoint.position;//spawns the cell at the shootpoint location.
         currentCell.SetActive(true);//makes the cell active for visiblity
 
-       currentCell.layer = LayerMask.NameToLayer("ShooterCell");
+      // currentCell.layer = LayerMask.NameToLayer("ShooterCell");
         currentCellCollider = currentCell.GetComponent<Collider2D>();//stores the collider component of the cell.
     }
 
@@ -204,7 +204,7 @@ public class Shooter : MonoBehaviour
         shot.transform.SetParent(hitCell.transform.parent);
 
         // CHANGE LAYER AFTER ATTACH
-        shot.layer = LayerMask.NameToLayer("Cell");
+        shot.layer = LayerMask.NameToLayer("GridCell");
 
 
         Cell shotCell = shot.GetComponent<Cell>();
