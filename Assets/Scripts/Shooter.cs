@@ -54,6 +54,8 @@ public class Shooter : MonoBehaviour
         cell.setColor((CellColor)Random.Range(0, 3));//randomly assign color to the cell in the colors present in CellColor enum.
         currentCell.transform.position = shootPoint.position;//spawns the cell at the shootpoint location.
         currentCell.SetActive(true);//makes the cell active for visiblity
+
+       currentCell.layer = LayerMask.NameToLayer("ShooterCell");
         currentCellCollider = currentCell.GetComponent<Collider2D>();//stores the collider component of the cell.
     }
 
@@ -201,8 +203,11 @@ public class Shooter : MonoBehaviour
         shot.transform.position = snapPos;
         shot.transform.SetParent(hitCell.transform.parent);
 
-        Cell shotCell = shot.GetComponent<Cell>();
+        // CHANGE LAYER AFTER ATTACH
+        shot.layer = LayerMask.NameToLayer("Cell");
 
+
+        Cell shotCell = shot.GetComponent<Cell>();
         // Get GridManager once
         GridManager gm = FindObjectOfType<GridManager>();
 

@@ -117,15 +117,17 @@ public class Cell : MonoBehaviour
 
         CellPooler.instance.ReturnCell(gameObject);
     }
-    //void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    if (other.CompareTag("LoseBar"))
-    //    {
-    //        Debug.Log("GAME OVER TRIGGERED");
 
-    //        UiManager.instance.GameOver();
-    //    }
-    //}
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (gameObject.layer == LayerMask.NameToLayer("Cell") &&
+        other.gameObject.layer == LayerMask.NameToLayer("LoseBar"))
+        {
+            Debug.Log("GAME OVER TRIGGERED");
+
+            UiManager.instance.GameOver();
+        }
+    }
 
 
 }
