@@ -9,13 +9,16 @@ public class GridManager : MonoBehaviour
     public float cellSpacing = 1f;
     public List<Cell> allCells = new List<Cell>();
     public List<Cell> topRowCells = new List<Cell>();
-
+    public static GridManager instance;
     void Start()
     {
-        GenerateGrid();
+      //  GenerateGrid();
         StartCoroutine(MoveGridDownRoutine());
     }
-
+    private void Awake()
+    {
+        instance = this;
+    }
     IEnumerator MoveGridDownRoutine()
     {
         while (true)

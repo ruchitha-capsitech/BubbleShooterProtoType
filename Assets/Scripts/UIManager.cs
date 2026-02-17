@@ -8,6 +8,7 @@ public class UiManager : MonoBehaviour
     public GameObject gamepanel;
     public GameObject gameoverpanel;
     public bool isGameOver = false;
+    public GameObject wall;
 
     private void Awake()
     {
@@ -28,11 +29,15 @@ public class UiManager : MonoBehaviour
     {
         startpanel.SetActive(false);
         gamepanel.SetActive(true);
+        Instantiate(wall);
+        GridManager.instance.GenerateGrid();
+
     }
     public void GameOver()
     {
         if (isGameOver) return;
         isGameOver = true;
+       
         startpanel.SetActive(false);
         gamepanel.SetActive(false);
         gameoverpanel.SetActive(true);

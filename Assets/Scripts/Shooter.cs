@@ -119,7 +119,7 @@ public class Shooter : MonoBehaviour
         List<Vector3> pathPoints = new List<Vector3>();
         pathPoints.Add(origin);
 
-        int maxBounces = 2;
+        int maxBounces =5;
         float remaining = 50f;
         Cell hitCell = null;
         bool hitTopWall = false;
