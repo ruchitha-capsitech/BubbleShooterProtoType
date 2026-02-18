@@ -231,6 +231,7 @@ public class Shooter : MonoBehaviour
                 }
                 AddScore(cluster.Count);
                 gm.CheckFloatingCells();
+                gm.CheckWinCondition();
             }
         }
     }

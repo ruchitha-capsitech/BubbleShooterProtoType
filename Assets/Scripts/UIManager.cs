@@ -7,6 +7,7 @@ public class UiManager : MonoBehaviour
     public GameObject startpanel;
     public GameObject gamepanel;
     public GameObject gameoverpanel;
+    public GameObject winPanel;
     public bool isGameOver = false;
     public GameObject wall;
 
@@ -41,5 +42,15 @@ public class UiManager : MonoBehaviour
         startpanel.SetActive(false);
         gamepanel.SetActive(false);
         gameoverpanel.SetActive(true);
+    }
+    public void WinGame()
+    {
+        //if (isGameOver) return;
+
+        //isGameOver = true;
+
+        startpanel.SetActive(false);
+        gamepanel.SetActive(false);
+        winPanel.SetActive(true);
     }
 }

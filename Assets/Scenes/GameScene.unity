@@ -375,6 +375,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1075602003 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2460770539033521745, guid: c843dfb4d5a3e40448ee6d36ec0107f9, type: 3}
+  m_PrefabInstance: {fileID: 216794908471083902}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1173083376
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,6 +567,7 @@ MonoBehaviour:
   startpanel: {fileID: 8378944400257314932}
   gamepanel: {fileID: 3414340301513523131}
   gameoverpanel: {fileID: 8127307743280885768}
+  winPanel: {fileID: 1075602003}
   isGameOver: 0
   wall: {fileID: 3805467985504456243, guid: 9cba1fbcc46dea147afe061b3b4cf572, type: 3}
 --- !u!1 &1806147303
