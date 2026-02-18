@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum CellColor { Red, Green, Blue,Pink };
+public enum CellColor { Red, Green, Blue, Yellow, Cyan, Magenta };
 public class Cell : MonoBehaviour
 {
     public CellColor color;
@@ -23,6 +23,9 @@ public class Cell : MonoBehaviour
             case CellColor.Red: sr.color = Color.red; break;
             case CellColor.Green: sr.color = Color.green; break;
             case CellColor.Blue: sr.color = Color.blue; break;
+            case CellColor.Yellow: sr.color = Color.yellow; break;
+            case CellColor.Cyan: sr.color = Color.cyan; break;
+            case CellColor.Magenta: sr.color = Color.magenta; break;
         }
     }
     public List<Cell> GetConnectedSameColorCells()

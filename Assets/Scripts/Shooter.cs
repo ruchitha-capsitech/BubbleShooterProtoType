@@ -196,48 +196,40 @@ public class Shooter : MonoBehaviour
 
         Vector3 dir = (shot.transform.position - hitCell.transform.position).normalized;
 
-        // Calculate snap distance
         float snapDistance = hitCol.bounds.extents.x + shotCol.bounds.extents.x + 0.01f;
 
         Vector3 snapPos = hitCell.transform.position + dir * snapDistance;
         shot.transform.position = snapPos;
         shot.transform.SetParent(hitCell.transform.parent);
 
-        // CHANGE LAYER AFTER ATTACH
+     
         shot.layer = LayerMask.NameToLayer("GridCell");
 
 
         Cell shotCell = shot.GetComponent<Cell>();
-        // Get GridManager once
+       
         GridManager gm = FindObjectOfType<GridManager>();
 
-        // IMPORTANT: Add the newly attached cell to tracking list
+       
         gm.allCells.Add(shotCell);
-
-        // If it attaches to top row height, also add to topRowCells
         if (Mathf.Approximately(shot.transform.position.y, hitCell.transform.position.y)
             && gm.topRowCells.Contains(hitCell))
         {
             gm.topRowCells.Add(shotCell);
         }
-
-        // Check color match
         if (hitCell.color == shotCell.color)
         {
             List<Cell> cluster = shotCell.GetConnectedSameColorCells();
 
-            if (cluster.Count >= 4)
+            if (cluster.Count >= 3)
             {
-                // First remove the matched cluster
                 foreach (Cell c in cluster)
                 {
                     gm.allCells.Remove(c);
                     gm.topRowCells.Remove(c);
                     CellPooler.instance.ReturnCell(c.gameObject);
                 }
-                // ADD SCORE (1 per ball removed)
                 AddScore(cluster.Count);
-                // THEN check for floating cells
                 gm.CheckFloatingCells();
             }
         }

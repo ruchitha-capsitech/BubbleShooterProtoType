@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    public int rows = 3;
+    public int rows;
     public int colomns = 10;
     public float cellSpacing = 1f;
     public List<Cell> allCells = new List<Cell>();
@@ -13,71 +13,73 @@ public class GridManager : MonoBehaviour
     void Start()
     {
       //  GenerateGrid();
-        StartCoroutine(MoveGridDownRoutine());
+        //StartCoroutine(MoveGridDownRoutine());
     }
     private void Awake()
     {
         instance = this;
     }
-    IEnumerator MoveGridDownRoutine()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(5f);
+    //IEnumerator MoveGridDownRoutine()
+    //{
+    //    while (true)
+    //    {
+    //        yield return new WaitForSeconds(5f);
 
-            MoveGridDown();
-            AddNewRow();
-        }
-    }
-    void MoveGridDown()
-    {
-        foreach (Cell c in allCells)
-        {
-            if (c != null && c.gameObject.activeInHierarchy)
-            {
-                c.transform.position += Vector3.down * cellSpacing;
-            }
-        }
-    }
-    void AddNewRow()
-    {
-        Camera cam = Camera.main;
-        float topY = cam.ViewportToWorldPoint(new Vector3(0, 1, 0)).y;
+    //        MoveGridDown();
+    //        AddNewRow();
+    //    }
+    //}
+    //void MoveGridDown()
+    //{
+    //    foreach (Cell c in allCells)
+    //    {
+    //        if (c != null && c.gameObject.activeInHierarchy)
+    //        {
+    //            c.transform.position += Vector3.down * cellSpacing;
+    //        }
+    //    }
+    //}
+    //void AddNewRow()
+    //{
+    //    Camera cam = Camera.main;
+    //    float topY = cam.ViewportToWorldPoint(new Vector3(0, 1, 0)).y;
 
-        List<Cell> newRow = new List<Cell>();
+    //    List<Cell> newRow = new List<Cell>();
 
-        for (int j = 0; j < colomns; j++)
-        {
-            var cellObj = CellPooler.instance.GetCell();
+    //    for (int j = 0; j < colomns; j++)
+    //    {
+    //        var cellObj = CellPooler.instance.GetCell();
 
-            if (cellObj == null)
-            {
-                Debug.LogError("CellPooler returned null! Check if prefab is assigned and pool has enough cells.");
-                return;
-            }
-            cellObj.layer = LayerMask.NameToLayer("GridCell");
+    //        if (cellObj == null)
+    //        {
+    //            Debug.LogError("CellPooler returned null! Check if prefab is assigned and pool has enough cells.");
+    //            return;
+    //        }
+    //        cellObj.layer = LayerMask.NameToLayer("GridCell");
 
-            var cell = cellObj.GetComponent<Cell>();
-            CellColor randomColor = (CellColor)Random.Range(0, 3);
-            cell.setColor(randomColor);
+    //        var cell = cellObj.GetComponent<Cell>();
+    //        CellColor randomColor = (CellColor)Random.Range(0, 3);
+    //        cell.setColor(randomColor);
 
-            allCells.Add(cell);
-            newRow.Add(cell);
+    //        allCells.Add(cell);
+    //        newRow.Add(cell);
 
-            Vector2 pos = new Vector2(
-                j * cellSpacing - (colomns - 1) * cellSpacing * 0.5f,
-                topY - cellSpacing * 0.5f
-            );
-            cellObj.transform.position = pos;
-        }
+    //        Vector2 pos = new Vector2(
+    //            j * cellSpacing - (colomns - 1) * cellSpacing * 0.5f,
+    //            topY - cellSpacing * 0.5f
+    //        );
+    //        cellObj.transform.position = pos;
+    //    }
 
 
-        topRowCells.Clear();
-        topRowCells.AddRange(newRow);
-    }
+    //    topRowCells.Clear();
+    //    topRowCells.AddRange(newRow);
+    //}
 
     public void GenerateGrid()
     {
+        rows = DifficultyManager.Instance.GetRowCount();
+
         Camera cam = Camera.main;
         float topY = cam.ViewportToWorldPoint(new Vector3(0, 1, 0)).y;
         if (CellPooler.instance == null)
@@ -93,7 +95,10 @@ public class GridManager : MonoBehaviour
                 cellObj.layer = LayerMask.NameToLayer("GridCell");
 
                 var cell = cellObj.GetComponent<Cell>();
-                CellColor randomColor = (CellColor)Random.Range(0, 3);
+                int allowedColors = DifficultyManager.Instance.GetAllowedColorCount();
+
+                CellColor randomColor = (CellColor)Random.Range(0, allowedColors);
+
                 cell.setColor(randomColor);
                 allCells.Add(cell);
 
