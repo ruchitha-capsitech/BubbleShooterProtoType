@@ -15,17 +15,6 @@ public class UiManager : MonoBehaviour
     {
         instance = this;
     }
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void startgame()
     {
         startpanel.SetActive(false);
@@ -38,19 +27,20 @@ public class UiManager : MonoBehaviour
     {
         if (isGameOver) return;
         isGameOver = true;
-       
         startpanel.SetActive(false);
         gamepanel.SetActive(false);
         gameoverpanel.SetActive(true);
     }
     public void WinGame()
     {
-        //if (isGameOver) return;
-
-        //isGameOver = true;
-
         startpanel.SetActive(false);
-        gamepanel.SetActive(false);
         winPanel.SetActive(true);
+    }
+    public void NextLevel()
+    {
+        DifficultyManager.Instance.currentLevel++;
+        winPanel.SetActive(false);
+        gamepanel.SetActive(true);
+        GridManager.instance.GenerateGrid();
     }
 }

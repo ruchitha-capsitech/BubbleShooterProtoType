@@ -10,12 +10,12 @@ public class DifficultyManager : MonoBehaviour
     }
     public float GetDifficulty()
     {
-        return Mathf.Clamp01(currentLevel / 50f);
+        return Mathf.Clamp01(currentLevel / 10f);
     }
     public int GetAllowedColorCount()
     {
         float d = GetDifficulty();
-        return Mathf.RoundToInt(Mathf.Lerp(2, 6, d));
+        return Mathf.RoundToInt(Mathf.Lerp(3, 6, d));
     }
     public int GetRowCount()
     {

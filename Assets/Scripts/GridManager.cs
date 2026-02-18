@@ -169,7 +169,6 @@ public class GridManager : MonoBehaviour
 
     public void CheckWinCondition()
     {
-        // remove null or inactive cells safety
         allCells.RemoveAll(c => c == null || !c.gameObject.activeInHierarchy);
 
         if (allCells.Count == 0)
