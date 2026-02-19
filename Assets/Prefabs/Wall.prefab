@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 444140933385872931}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.75, y: -0.04, z: 0}
+  m_LocalPosition: {x: 2.47, y: -0.04, z: 0}
   m_LocalScale: {x: 0.803121, y: 14.647347, z: 0.97348}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 7043586904076817510}
   - component: {fileID: 8456616297390505325}
   - component: {fileID: 4096597232890941091}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: OverBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -492,7 +492,7 @@ Transform:
   m_GameObject: {fileID: 7050065591409343378}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.75, y: 0, z: 0}
+  m_LocalPosition: {x: -2.5, y: 0, z: 0}
   m_LocalScale: {x: 0.86806285, y: 15.3483305, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

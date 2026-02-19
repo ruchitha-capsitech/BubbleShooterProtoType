@@ -13,6 +13,8 @@ public class UiManager : MonoBehaviour
     public GameObject wall;
     public TMP_Text levelText;
     public TMP_Text scoreText;
+    public GameObject shooter;
+
     public void Update()
     {
         levelText.text = "Level :" + DifficultyManager.Instance.currentLevel;
@@ -26,10 +28,13 @@ public class UiManager : MonoBehaviour
         startpanel.SetActive(false);
         gamepanel.SetActive(true);
         Instantiate(wall);
+        Instantiate(shooter);
         GridManager.instance.GenerateGrid();
         UpdateScore(Shooter.Instance.score);
 
+        Shooter.Instance.EnableShooting();   
     }
+
     public void GameOver()
     {
         if (isGameOver) return;
@@ -42,6 +47,7 @@ public class UiManager : MonoBehaviour
     {
         startpanel.SetActive(false);
         winPanel.SetActive(true);
+        Shooter.Instance.DisableShooting();
       
     }
     public void NextLevel()
@@ -50,6 +56,7 @@ public class UiManager : MonoBehaviour
         winPanel.SetActive(false);
         gamepanel.SetActive(true);
         GridManager.instance.GenerateGrid();
+        Shooter.Instance.EnableShooting();
     }
     public void UpdateScore(int newScore)
     {

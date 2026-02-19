@@ -17,6 +17,8 @@ public class Shooter : MonoBehaviour
     public LayerMask TopWallLayer;
    //public TMP_Text scoreText;
     public int score = 0;
+    private bool canShoot = false;
+
     void Awake()
     {
         Instance = this;
@@ -36,18 +38,48 @@ public class Shooter : MonoBehaviour
         SpawnNewCell();
     }
 
+    //void Update()
+    //{
+    //    if (isShooting) return;
+    //    AimAtMouse();
+    //    DrawAimingLine();
+    //    if (Input.GetMouseButtonDown(1))
+    //    {
+    //        StartCoroutine(ShootCellAlongRay());
+    //    }
+    //}
+
     void Update()
     {
-        if (isShooting) return;
-        AimAtMouse();
-        DrawAimingLine();
-        if (Input.GetMouseButtonDown(1))
+        if (!canShoot || isShooting) return;
+
+#if UNITY_EDITOR || UNITY_STANDALONE
+        AimAtPosition(Input.mousePosition);
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            StartCoroutine(ShootCellAlongRay());
+        }
+#else
+    if (Input.touchCount > 0)
+    {
+        Touch touch = Input.GetTouch(0);
+
+        AimAtPosition(touch.position);
+
+        if (touch.phase == TouchPhase.Ended)
         {
             StartCoroutine(ShootCellAlongRay());
         }
     }
+#endif
 
-   public void SpawnNewCell()
+        DrawAimingLine();
+    }
+
+
+
+    public void SpawnNewCell()
     {
         currentCell = CellPooler.instance.GetCell();
         var cell = currentCell.GetComponent<Cell>();
@@ -58,16 +90,48 @@ public class Shooter : MonoBehaviour
         currentCell.SetActive(true);
         currentCellCollider = currentCell.GetComponent<Collider2D>();
     }
-   public void AimAtMouse()
+    //public void AimAtMouse()
+    // {
+    //     Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //     mousePos.z = 0;
+    //     Vector2 direction = (mousePos - transform.position).normalized;
+    //     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+    //     angle = Mathf.Clamp(angle, -rotateLimit, rotateLimit);
+    //     transform.rotation = Quaternion.Euler(0, 0, angle);
+    // }
+    public void AimAtPosition(Vector3 inputPosition)
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
-        Vector2 direction = (mousePos - transform.position).normalized;
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(inputPosition);
+        worldPos.z = 0;
+
+        Vector2 direction = (worldPos - transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
         angle = Mathf.Clamp(angle, -rotateLimit, rotateLimit);
+
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
-  public  void DrawAimingLine()
+    public void EnableShooting()
+    {
+        StartCoroutine(EnableShootDelay());
+    }
+
+    IEnumerator EnableShootDelay()
+    {
+        yield return new WaitForSeconds(0.2f);
+        canShoot = true;
+    }
+    public void DisableShooting()
+    {
+        StartCoroutine(DisableShootDelay());
+    }
+
+    IEnumerator DisableShootDelay()
+    {
+        yield return new WaitForSeconds(0.2f);
+        canShoot = false;
+    }
+
+    public void DrawAimingLine()
     {
         Vector2 origin = shootPoint.position;
         Vector2 dir = shootPoint.up;
@@ -159,6 +223,9 @@ public class Shooter : MonoBehaviour
             p.y -= 0.4f;
             currentCell.transform.position = p;
             currentCell.transform.SetParent(null);
+            var Currcell = currentCell.GetComponent<Cell>();
+            GridManager.instance.allCells.Add(Currcell);
+            GridManager.instance.topRowCells.Add(Currcell);
         }
         yield return new WaitForSeconds(0.05f);
 
@@ -171,15 +238,18 @@ public class Shooter : MonoBehaviour
         CircleCollider2D hitCol = hitCell.GetComponent<CircleCollider2D>();
         CircleCollider2D shotCol = shot.GetComponent<CircleCollider2D>();
         Vector3 dir = (shot.transform.position - hitCell.transform.position).normalized;
-        //float snapDistance = hitCol.bounds.extents.x + shotCol.bounds.extents.x + 0.01f;
-        float snapDistance = hitCol.radius * Mathf.Max(hitCell.transform.localScale.x, hitCell.transform.localScale.y)
-                    + shotCol.radius * Mathf.Max(shot.transform.localScale.x, shot.transform.localScale.y)
-                    + 0.01f;
+       
+        float snapDistance = hitCol.bounds.extents.x + shotCol.bounds.extents.x + 0.01f;
+
         Vector3 snapPos = hitCell.transform.position + dir * snapDistance;
         Debug.Log($"Hit radius: {hitCol.radius}, Shot radius: {shotCol.radius}");
         Debug.Log($"Bounds extents: {hitCol.bounds.extents.x}, {shotCol.bounds.extents.y}");
         shot.transform.position = snapPos;
-        shot.transform.SetParent(hitCell.transform.parent);
+        Rigidbody2D rb = shot.GetComponent<Rigidbody2D>();
+       
+
+        shot.transform.SetParent(hitCell.transform.parent, true);
+
         shot.layer = LayerMask.NameToLayer("GridCell");
         Cell shotCell = shot.GetComponent<Cell>();
         GridManager gm = FindObjectOfType<GridManager>();
