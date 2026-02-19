@@ -15,8 +15,8 @@ public class Shooter : MonoBehaviour
     private bool isShooting = false;
     public LayerMask WallLayer;
     public LayerMask TopWallLayer;
-    public TMP_Text scoreText;
-    private int score = 0;
+   //public TMP_Text scoreText;
+    public int score = 0;
     void Awake()
     {
         Instance = this;
@@ -206,10 +206,11 @@ public class Shooter : MonoBehaviour
             }
         }
     }
-    void AddScore(int amount)
+    public void AddScore(int amount)
     {
         score += amount;
-        scoreText.text = "Score:"+score.ToString();
+        UiManager.instance.UpdateScore(score);
+        //scoreText.text = "Score:"+score.ToString();
     }
 
 }

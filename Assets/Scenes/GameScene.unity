@@ -119,6 +119,28 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &217919387 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3002045498797539687, guid: c843dfb4d5a3e40448ee6d36ec0107f9, type: 3}
+  m_PrefabInstance: {fileID: 216794908471083902}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &345292179 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 758751793369458551, guid: c843dfb4d5a3e40448ee6d36ec0107f9, type: 3}
+  m_PrefabInstance: {fileID: 216794908471083902}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &501641354
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,6 +542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLevel: 1
+  totallevels: 20
 --- !u!1 &1742127521
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,6 +593,8 @@ MonoBehaviour:
   winPanel: {fileID: 1075602003}
   isGameOver: 0
   wall: {fileID: 3805467985504456243, guid: 9cba1fbcc46dea147afe061b3b4cf572, type: 3}
+  levelText: {fileID: 217919387}
+  scoreText: {fileID: 345292179}
 --- !u!1 &1806147303
 GameObject:
   m_ObjectHideFlags: 0
@@ -665,6 +690,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1742127523}
+    - target: {fileID: 2713991858631424132, guid: c843dfb4d5a3e40448ee6d36ec0107f9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NextLevel
+      objectReference: {fileID: 0}
     - target: {fileID: 6442845827851140549, guid: c843dfb4d5a3e40448ee6d36ec0107f9, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -745,6 +774,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6837764131464659031, guid: c843dfb4d5a3e40448ee6d36ec0107f9, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2989446780924660450, guid: 602a82ca732d8a44cbc28613bdf10844, type: 3}
     - target: {fileID: 8142472419200177704, guid: c843dfb4d5a3e40448ee6d36ec0107f9, type: 3}
       propertyPath: m_Name
       value: Canvas

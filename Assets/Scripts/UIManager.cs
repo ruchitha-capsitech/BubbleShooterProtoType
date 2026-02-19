@@ -12,7 +12,7 @@ public class UiManager : MonoBehaviour
     public bool isGameOver = false;
     public GameObject wall;
     public TMP_Text levelText;
-
+    public TMP_Text scoreText;
     public void Update()
     {
         levelText.text = "Level :" + DifficultyManager.Instance.currentLevel;
@@ -27,6 +27,7 @@ public class UiManager : MonoBehaviour
         gamepanel.SetActive(true);
         Instantiate(wall);
         GridManager.instance.GenerateGrid();
+        UpdateScore(Shooter.Instance.score);
 
     }
     public void GameOver()
@@ -50,4 +51,9 @@ public class UiManager : MonoBehaviour
         gamepanel.SetActive(true);
         GridManager.instance.GenerateGrid();
     }
+    public void UpdateScore(int newScore)
+    {
+        scoreText.text = "Score : " + newScore.ToString();
+    }
+
 }
