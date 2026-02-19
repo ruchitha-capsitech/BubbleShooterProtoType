@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,7 +11,12 @@ public class UiManager : MonoBehaviour
     public GameObject winPanel;
     public bool isGameOver = false;
     public GameObject wall;
+    public TMP_Text levelText;
 
+    public void Update()
+    {
+        levelText.text = "Level :" + DifficultyManager.Instance.currentLevel;
+    }
     private void Awake()
     {
         instance = this;
@@ -35,6 +41,7 @@ public class UiManager : MonoBehaviour
     {
         startpanel.SetActive(false);
         winPanel.SetActive(true);
+      
     }
     public void NextLevel()
     {

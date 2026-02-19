@@ -41,7 +41,7 @@ public class Shooter : MonoBehaviour
         if (isShooting) return;
         AimAtMouse();
         DrawAimingLine();
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             StartCoroutine(ShootCellAlongRay());
         }
@@ -171,8 +171,13 @@ public class Shooter : MonoBehaviour
         CircleCollider2D hitCol = hitCell.GetComponent<CircleCollider2D>();
         CircleCollider2D shotCol = shot.GetComponent<CircleCollider2D>();
         Vector3 dir = (shot.transform.position - hitCell.transform.position).normalized;
-        float snapDistance = hitCol.bounds.extents.x + shotCol.bounds.extents.x + 0.01f;
+        //float snapDistance = hitCol.bounds.extents.x + shotCol.bounds.extents.x + 0.01f;
+        float snapDistance = hitCol.radius * Mathf.Max(hitCell.transform.localScale.x, hitCell.transform.localScale.y)
+                    + shotCol.radius * Mathf.Max(shot.transform.localScale.x, shot.transform.localScale.y)
+                    + 0.01f;
         Vector3 snapPos = hitCell.transform.position + dir * snapDistance;
+        Debug.Log($"Hit radius: {hitCol.radius}, Shot radius: {shotCol.radius}");
+        Debug.Log($"Bounds extents: {hitCol.bounds.extents.x}, {shotCol.bounds.extents.y}");
         shot.transform.position = snapPos;
         shot.transform.SetParent(hitCell.transform.parent);
         shot.layer = LayerMask.NameToLayer("GridCell");
@@ -204,7 +209,7 @@ public class Shooter : MonoBehaviour
     void AddScore(int amount)
     {
         score += amount;
-        scoreText.text = score.ToString();
+        scoreText.text = "Score:"+score.ToString();
     }
 
 }
