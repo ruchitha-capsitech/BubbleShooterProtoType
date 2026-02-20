@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 public class Shooter : MonoBehaviour
@@ -215,15 +216,16 @@ public class Shooter : MonoBehaviour
         }
         else if (hitTopWall)
         {
-            Vector3 p = pathPoints[pathPoints.Count - 1];
-            float radius = GridManager.instance.cellSpacing * 0.5f;
-            p.y -= radius;
-            currentCell.transform.position = p;
-            currentCell.transform.SetParent(null);
-            var Currcell = currentCell.GetComponent<Cell>();
-            GridManager.instance.allCells.Add(Currcell);
-            GridManager.instance.topRowCells.Add(Currcell);
+            Cell reference = GridManager.instance.topRowCells
+                .OrderBy(c => Mathf.Abs(c.transform.position.x - currentCell.transform.position.x))
+                .FirstOrDefault();
+
+            if (reference != null)
+            {
+                AttachCell(currentCell, reference);
+            }
         }
+
         yield return new WaitForSeconds(0.05f);
 
         SpawnNewCell();
