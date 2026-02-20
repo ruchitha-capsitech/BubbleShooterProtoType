@@ -86,7 +86,9 @@ public class GridManager : MonoBehaviour
         {
             return;
         }
-
+        float radius = cellSpacing * 0.5f;
+        float width = cellSpacing;
+        float height = Mathf.Sqrt(3f) * radius;
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < colomns; j++)
@@ -96,19 +98,19 @@ public class GridManager : MonoBehaviour
 
                 var cell = cellObj.GetComponent<Cell>();
                 int allowedColors = DifficultyManager.Instance.GetAllowedColorCount();
-
                 CellColor randomColor = (CellColor)Random.Range(0, allowedColors);
-
                 cell.setColor(randomColor);
+
                 allCells.Add(cell);
 
                 if (i == 0)
-                {
                     topRowCells.Add(cell);
-                }
-;
-                Vector2 pos = new Vector2(j * cellSpacing - (colomns - 1) * cellSpacing * 0.5f, topY - i * cellSpacing - cellSpacing * 0.5f);
-                cellObj.transform.position = pos;
+
+                float xOffset = (i % 2 == 0) ? 0 : radius;
+                float x = j * width + xOffset - (colomns * width) * 0.5f;
+                float y = topY - i * height - radius;
+
+                cellObj.transform.position = new Vector2(x, y);
             }
         }
     }
@@ -127,7 +129,6 @@ public class GridManager : MonoBehaviour
                 connectedToTop.Add(top);
             }
         }
-
         while (toCheck.Count > 0)
         {
             Cell current = toCheck.Dequeue();
@@ -143,8 +144,6 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-
-
         List<Cell> floating = new List<Cell>();
 
         foreach (Cell c in allCells)
@@ -154,7 +153,6 @@ public class GridManager : MonoBehaviour
                 floating.Add(c);
             }
         }
-
         foreach (Cell c in floating)
         {
             allCells.Remove(c);
@@ -165,8 +163,6 @@ public class GridManager : MonoBehaviour
         CheckWinCondition();
 
     }
-
-
     public void CheckWinCondition()
     {
         allCells.RemoveAll(c => c == null || !c.gameObject.activeInHierarchy);

@@ -15,7 +15,6 @@ public class Shooter : MonoBehaviour
     private bool isShooting = false;
     public LayerMask WallLayer;
     public LayerMask TopWallLayer;
-   //public TMP_Text scoreText;
     public int score = 0;
     private bool canShoot = false;
 
@@ -76,9 +75,6 @@ public class Shooter : MonoBehaviour
 
         DrawAimingLine();
     }
-
-
-
     public void SpawnNewCell()
     {
         currentCell = CellPooler.instance.GetCell();
@@ -220,7 +216,8 @@ public class Shooter : MonoBehaviour
         else if (hitTopWall)
         {
             Vector3 p = pathPoints[pathPoints.Count - 1];
-            p.y -= 0.4f;
+            float radius = GridManager.instance.cellSpacing * 0.5f;
+            p.y -= radius;
             currentCell.transform.position = p;
             currentCell.transform.SetParent(null);
             var Currcell = currentCell.GetComponent<Cell>();
@@ -235,24 +232,55 @@ public class Shooter : MonoBehaviour
     }
     public void AttachCell(GameObject shot, Cell hitCell)
     {
-        CircleCollider2D hitCol = hitCell.GetComponent<CircleCollider2D>();
-        CircleCollider2D shotCol = shot.GetComponent<CircleCollider2D>();
-        Vector3 dir = (shot.transform.position - hitCell.transform.position).normalized;
-       
-        float snapDistance = hitCol.bounds.extents.x + shotCol.bounds.extents.x + 0.01f;
+        GridManager gm = GridManager.instance;
 
-        Vector3 snapPos = hitCell.transform.position + dir * snapDistance;
-        Debug.Log($"Hit radius: {hitCol.radius}, Shot radius: {shotCol.radius}");
-        Debug.Log($"Bounds extents: {hitCol.bounds.extents.x}, {shotCol.bounds.extents.y}");
-        shot.transform.position = snapPos;
+        float radius = gm.cellSpacing * 0.5f;
+        float width = radius * 2f;
+        float height = Mathf.Sqrt(3f) * radius;
+
+        Vector2[] offsets = new Vector2[]
+        {
+    new Vector2(width, 0),
+    new Vector2(-width, 0),
+    new Vector2(width * 0.5f, height),
+    new Vector2(-width * 0.5f, height),
+    new Vector2(width * 0.5f, -height),
+    new Vector2(-width * 0.5f, -height)
+        };
+
+        float minDist = float.MaxValue;
+        Vector3 bestPos = Vector3.zero;
+
+        foreach (Vector2 offset in offsets)
+        {
+            Vector3 candidate = hitCell.transform.position + (Vector3)offset;
+
+            bool occupied = false;
+
+            foreach (Cell c in gm.allCells)
+            {
+                if (Vector3.Distance(c.transform.position, candidate) < radius)
+                {
+                    occupied = true;
+                    break;
+                }
+            }
+
+            if (!occupied)
+            {
+                float dist = Vector3.Distance(shot.transform.position, candidate);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    bestPos = candidate;
+                }
+            }
+        }
+        shot.transform.position = bestPos;
         Rigidbody2D rb = shot.GetComponent<Rigidbody2D>();
-       
-
         shot.transform.SetParent(hitCell.transform.parent, true);
-
         shot.layer = LayerMask.NameToLayer("GridCell");
         Cell shotCell = shot.GetComponent<Cell>();
-        GridManager gm = FindObjectOfType<GridManager>();
         gm.allCells.Add(shotCell);
         if (Mathf.Approximately(shot.transform.position.y, hitCell.transform.position.y)
             && gm.topRowCells.Contains(hitCell))
@@ -280,7 +308,6 @@ public class Shooter : MonoBehaviour
     {
         score += amount;
         UiManager.instance.UpdateScore(score);
-        //scoreText.text = "Score:"+score.ToString();
     }
 
 }
