@@ -289,8 +289,7 @@ public class Shooter : MonoBehaviour
         {
             gm.topRowCells.Add(shotCell);
         }
-        if (hitCell.color == shotCell.color)
-        {
+       
             List<Cell> cluster = shotCell.GetConnectedSameColorCells();
             if (cluster.Count >= 3)
             {
@@ -304,7 +303,7 @@ public class Shooter : MonoBehaviour
                 gm.CheckFloatingCells();
                 gm.CheckWinCondition();
             }
-        }
+        
     }
     public void AddScore(int amount)
     {
