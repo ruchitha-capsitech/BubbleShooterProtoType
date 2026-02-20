@@ -40,8 +40,9 @@ public class UiManager : MonoBehaviour
         if (isGameOver) return;
         isGameOver = true;
         startpanel.SetActive(false);
-        gamepanel.SetActive(false);
+       
         gameoverpanel.SetActive(true);
+        Shooter.Instance.DisableShooting();
     }
     public void WinGame()
     {
@@ -57,10 +58,29 @@ public class UiManager : MonoBehaviour
         gamepanel.SetActive(true);
         GridManager.instance.GenerateGrid();
         Shooter.Instance.EnableShooting();
+       
     }
     public void UpdateScore(int newScore)
     {
         scoreText.text = "Score : " + newScore.ToString();
     }
+    public void RestartGame()
+    {isGameOver= false; 
+      
+       
 
+        foreach (Cell g in GridManager.instance.allCells)
+        {
+            CellPooler.instance.ReturnCell(g.gameObject);
+        }
+        GridManager.instance.allCells.Clear();
+        foreach (Cell g in GridManager.instance.topRowCells)
+        {
+            CellPooler.instance.ReturnCell(g.gameObject);
+        }
+        GridManager.instance.topRowCells.Clear();
+        gameoverpanel.SetActive(false);
+        GridManager.instance.GenerateGrid();
+        Shooter.Instance.EnableShooting();
+    }
 }

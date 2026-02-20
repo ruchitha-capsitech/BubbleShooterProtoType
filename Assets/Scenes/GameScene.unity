@@ -420,7 +420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellPrefab: {fileID: 3701025098661362411, guid: 3efc0746065151147b7f0323b08ccabd, type: 3}
-  cellPoolSize: 200
+  cellPoolSize: 500
 --- !u!1 &1353969125
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,7 +466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rows: 10
-  colomns: 9
+  colomns: 8
   cellSpacing: 0.5
   allCells: []
   topRowCells: []
@@ -656,9 +656,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 10402269501259332, guid: 3e5286904bad8aa4db53651dc4f255a9, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+    - target: {fileID: 2535875529787772649, guid: 3e5286904bad8aa4db53651dc4f255a9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1742127523}
+    - target: {fileID: 2535875529787772649, guid: 3e5286904bad8aa4db53651dc4f255a9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RestartGame
       objectReference: {fileID: 0}
     - target: {fileID: 5232177239829917223, guid: 3e5286904bad8aa4db53651dc4f255a9, type: 3}
       propertyPath: m_Pivot.x
