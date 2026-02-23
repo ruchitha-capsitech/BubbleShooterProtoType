@@ -30,8 +30,9 @@ public class UiManager : MonoBehaviour
         Instantiate(wall);
         Instantiate(shooter);
         GridManager.instance.GenerateGrid();
-        UpdateScore(Shooter.Instance.score);
-
+        // UpdateScore(Shooter.Instance.score);
+        Shooter.Instance.score = 0;
+        UpdateScore(0);
         Shooter.Instance.EnableShooting();   
     }
 
@@ -57,6 +58,8 @@ public class UiManager : MonoBehaviour
         winPanel.SetActive(false);
         gamepanel.SetActive(true);
         GridManager.instance.GenerateGrid();
+        Shooter.Instance.score = 0;
+        UpdateScore(0);
         Shooter.Instance.EnableShooting();
        
     }
@@ -81,6 +84,8 @@ public class UiManager : MonoBehaviour
         GridManager.instance.topRowCells.Clear();
         gameoverpanel.SetActive(false);
         GridManager.instance.GenerateGrid();
+        Shooter.Instance.score = 0;
+        UpdateScore(0);
         Shooter.Instance.EnableShooting();
     }
 }
