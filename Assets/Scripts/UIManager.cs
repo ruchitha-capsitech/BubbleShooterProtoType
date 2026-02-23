@@ -13,6 +13,7 @@ public class UiManager : MonoBehaviour
     public GameObject wall;
     public TMP_Text levelText;
     public TMP_Text scoreText;
+    public TMP_Text winScoreText;
     public GameObject shooter;
 
     public void Update()
@@ -49,6 +50,7 @@ public class UiManager : MonoBehaviour
     {
         startpanel.SetActive(false);
         winPanel.SetActive(true);
+        winScoreText.text = "Score : "+Shooter.Instance.score.ToString();
         Shooter.Instance.DisableShooting();
       
     }
